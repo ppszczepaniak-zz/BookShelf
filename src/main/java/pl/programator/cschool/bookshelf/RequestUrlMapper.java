@@ -1,6 +1,7 @@
 package pl.programator.cschool.bookshelf;
 
 import fi.iki.elonen.NanoHTTPD;
+import pl.programator.cschool.bookshelf.controller.BookController;
 
 import static fi.iki.elonen.NanoHTTPD.Method.GET;
 import static fi.iki.elonen.NanoHTTPD.Method.POST;
@@ -13,17 +14,18 @@ public class RequestUrlMapper {
     private final static String GET_ALL_BOOK_URL = "/book/getAll";
 
     public NanoHTTPD.Response delegateRequest(NanoHTTPD.IHTTPSession session) {
+        BookController bookController = new BookController();
 
         if (GET.equals(session.getMethod()) && GET_BOOK_URL.equals(session.getUri())) {
-            return null;
+            return bookController.serveGetBookRequest(session);
 
         } else if (GET.equals(session.getMethod()) && GET_ALL_BOOK_URL.equals(session.getUri())) {
-            return null;
+            return bookController.serveGetAllBooksRequest(session);
 
         } else if (POST.equals(session.getMethod()) && ADD_BOOK_URL.equals(session.getUri())) {
-            return null;
+            return bookController.serveAddBookRequest(session);
         }
 
-        return NanoHTTPD.newFixedLengthResponse(NOT_FOUND,"text/plain","404! These are not the droids you're looking for...");
+        return NanoHTTPD.newFixedLengthResponse(NOT_FOUND, "text/plain", "404! These are not the droids you're looking for...");
     }
 }

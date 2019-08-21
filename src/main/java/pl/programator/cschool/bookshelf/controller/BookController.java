@@ -11,7 +11,7 @@ public class BookController {
         return null;
     }
 
-    public NanoHTTPD.Response serveGetBooksRequest(NanoHTTPD.IHTTPSession session) {
+    public NanoHTTPD.Response serveGetAllBooksRequest(NanoHTTPD.IHTTPSession session) {
         return null;
     }
 

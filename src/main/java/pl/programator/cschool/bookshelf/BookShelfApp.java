@@ -9,7 +9,7 @@ public class BookShelfApp extends NanoHTTPD {
 
     private BookShelfApp(int port) throws IOException {
         super(port);
-        start(5000, false);
+        start(5000, false); //daemon: should server start as a separate thread?
         System.out.println("I've started your server...");
     }
 

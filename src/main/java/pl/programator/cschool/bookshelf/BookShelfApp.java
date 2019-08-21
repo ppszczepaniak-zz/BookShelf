@@ -6,6 +6,7 @@ import java.io.IOException;
 
 public class BookShelfApp extends NanoHTTPD {
 
+    RequestUrlMapper requestUrlMapper = new RequestUrlMapper();
 
     private BookShelfApp(int port) throws IOException {
         super(port);
@@ -23,6 +24,6 @@ public class BookShelfApp extends NanoHTTPD {
 
     @Override
     public Response serve(IHTTPSession session) {
-        return super.serve(session);
+        return requestUrlMapper.delegateRequest(session);
     }
 }

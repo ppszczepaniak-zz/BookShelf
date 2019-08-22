@@ -17,25 +17,25 @@ import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 public class BookController {
     private BookStorage bookStorage = new StaticListBookStorageImpl(); //creates storage of books
 
-    private static final String BOOK_IT_PARAM_NAME = "bookID"; //used to get book from storage
+    private static final String BOOK_IT_PARAM_NAME = "bookId"; //used to get book from storage
 
 
     public Response serveGetBookRequest(IHTTPSession session) {
         Map<String, List<String>> requestParameters = session.getParameters(); //takes all params from session
         if (requestParameters.containsKey(BOOK_IT_PARAM_NAME)) { //if there is a parameter bookID, then...
-            List<String> bookIDparams = requestParameters.get(BOOK_IT_PARAM_NAME); //gets list of parameters
-            String bookIDparam = bookIDparams.get(0); //gets 1st
-            long bookID = 0;
+            List<String> bookIdparams = requestParameters.get(BOOK_IT_PARAM_NAME); //gets list of parameters
+            String bookIdparam = bookIdparams.get(0); //gets 1st
+            long bookId = 0;
 
             try {
-                bookID = Long.parseLong(bookIDparam);
+                bookId = Long.parseLong(bookIdparam);
 
             } catch (NumberFormatException nfe) { //if NaN
                 System.err.println("Error during converting of request parameter: \n" + nfe);
                 return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Request parameter 'bookID' must be a number!");
             }
 
-            Book foundBook = bookStorage.getBook(bookID);
+            Book foundBook = bookStorage.getBook(bookId);
 
             if (foundBook != null) { //if this book we take isn't empty
                 ObjectMapper objectMapper = new ObjectMapper();

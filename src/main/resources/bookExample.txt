@@ -1,0 +1,7 @@
+{
+	"tile":"Mały Książę",
+	"author":"Antoine de Saint-Exupéry",
+	"pagesSum":142,
+	"yearOfPublished":1947,
+	"publishingHouse":"Wydawnictwo ABC"
+}

@@ -26,4 +26,12 @@ public class BookShelfApp extends NanoHTTPD {
     public Response serve(IHTTPSession session) {
         return requestUrlMapper.delegateRequest(session);
     }
+
+
+    /** HOW IT WORKS
+     * Fire up in Postman:
+     * POST http://localhost:8080/book/add +in BODY: fill some JSON, see bookExample.txt
+     * GET http://localhost:8080/book/getAll
+     * GET http://localhost:8080/book/get (...)
+     */
 }

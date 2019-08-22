@@ -1,6 +1,5 @@
 package pl.programator.cschool.bookshelf;
 
-import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.*;
 import pl.programator.cschool.bookshelf.controller.BookController;
 

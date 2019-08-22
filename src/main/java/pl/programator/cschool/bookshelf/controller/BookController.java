@@ -2,14 +2,15 @@ package pl.programator.cschool.bookshelf.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.xml.internal.bind.v2.TODO;
 import fi.iki.elonen.NanoHTTPD.*;
 import pl.programator.cschool.bookshelf.storage.BookStorage;
 import pl.programator.cschool.bookshelf.storage.impl.StaticListBookStorageImpl;
 import pl.programator.cschool.bookshelf.type.Book;
 
-import static fi.iki.elonen.NanoHTTPD.Response.Status.INTERNAL_ERROR;
-import static fi.iki.elonen.NanoHTTPD.Response.Status.OK;
+import java.util.List;
+import java.util.Map;
+
+import static fi.iki.elonen.NanoHTTPD.Response.Status.*;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 
 
@@ -20,8 +21,37 @@ public class BookController {
 
 
     public Response serveGetBookRequest(IHTTPSession session) {
-        //TODO finished here: https://platform.cschool.pl/student-app/courses/277/modules/2845/lessons/3380/pages/8
-        return null;
+        Map<String, List<String>> requestParameters = session.getParameters(); //takes all params from session
+        if (requestParameters.containsKey(BOOK_IT_PARAM_NAME)) { //if there is a parameter bookID, then...
+            List<String> bookIDparams = requestParameters.get(BOOK_IT_PARAM_NAME); //gets list of parameters
+            String bookIDparam = bookIDparams.get(0); //gets 1st
+            long bookID = 0;
+
+            try {
+                bookID = Long.parseLong(bookIDparam);
+
+            } catch (NumberFormatException nfe) { //if NaN
+                System.err.println("Error during converting of request parameter: \n" + nfe);
+                return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Request parameter 'bookID' must be a number!");
+            }
+
+            Book foundBook = bookStorage.getBook(bookID);
+
+            if (foundBook != null) { //if this book we take isn't empty
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                try {
+                    String response = objectMapper.writeValueAsString(foundBook); //przypisuje ksiazke do Stringa w formacie JSON
+                    return newFixedLengthResponse(OK, "application/json", response); //zwracam string w JSON
+
+                } catch (JsonProcessingException e) {
+                    System.err.println("Error during process request: \n" + e);
+                    return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Internal error! Can't read a book.");
+                }
+            }
+            return newFixedLengthResponse(NOT_FOUND, "application/json", ""); //return when book hasn't been found
+        }
+        return newFixedLengthResponse(BAD_REQUEST, "text/plain", "Incorrect request parameter!"); //return when there there's no bookID param in request
     }
 
     public Response serveGetAllBooksRequest(IHTTPSession session) {

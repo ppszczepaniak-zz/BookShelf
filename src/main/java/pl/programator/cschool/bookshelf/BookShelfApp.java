@@ -32,6 +32,6 @@ public class BookShelfApp extends NanoHTTPD {
      * Fire up in Postman:
      * POST http://localhost:8080/book/add +in BODY: fill some JSON, see bookExample.txt
      * GET http://localhost:8080/book/getAll
-     * GET http://localhost:8080/book/get (...)
-     */
+     * GET http://localhost:8080/book/get +in PARAMS: add bookId, value: [number - first add book, and find one ID by getAll]
+            */
 }

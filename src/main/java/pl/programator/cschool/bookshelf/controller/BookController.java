@@ -48,10 +48,14 @@ public class BookController {
                     System.err.println("Error during process request: \n" + e);
                     return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Internal error! Can't read a book.");
                 }
+
+            } else {
+                return newFixedLengthResponse(NOT_FOUND, "application/json", ""); //return when such book hasn't been found
             }
-            return newFixedLengthResponse(NOT_FOUND, "application/json", ""); //return when book hasn't been found
+
+        } else {
+            return newFixedLengthResponse(BAD_REQUEST, "text/plain", "Incorrect request parameter!"); //return when there there's no bookID param in request
         }
-        return newFixedLengthResponse(BAD_REQUEST, "text/plain", "Incorrect request parameter!"); //return when there there's no bookID param in request
     }
 
     public Response serveGetAllBooksRequest(IHTTPSession session) {

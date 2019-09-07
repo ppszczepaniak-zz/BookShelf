@@ -48,7 +48,7 @@ public class PostgresBookStorageImpl implements BookStorage {
 
     @Override
     public void addBook(Book book) {
-        final String sqlInsertBook = "INSER INTO books(" +
+        final String sqlInsertBook = "INSERT INTO books(" +
                 "book_id, title, author, pages_sum, year_of_published, publishing_house)" +
                 "VALUES (?,?,?,?,?,?);";
 
@@ -83,7 +83,7 @@ public class PostgresBookStorageImpl implements BookStorage {
 
     @Override
     public List<Book> getAllBooks() {
-
+        bookStorage.clear(); //czyszcze liste, bo inaczej kazde wywolanie getAllBooks dopisywaloby wszystkie do listy
         final String sqlSelectAllBook = "SELECT * from books;";
 
         Connection connection = initialazeDataBaseConnection();
@@ -102,7 +102,6 @@ public class PostgresBookStorageImpl implements BookStorage {
                 book.setPagesSum(resultSet.getInt("pages_sum"));
                 book.setYearOfPublished(resultSet.getInt("year_of_published"));
                 book.setPublishingHouse(resultSet.getString("publishing_house"));
-
 
                 bookStorage.add(book);
             }

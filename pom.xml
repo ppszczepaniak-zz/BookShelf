@@ -21,6 +21,12 @@
             <artifactId>commons-math3</artifactId>
             <version>3.6.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.6</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.nanohttpd/nanohttpd -->
         <dependency>
             <groupId>org.nanohttpd</groupId>

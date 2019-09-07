@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.iki.elonen.NanoHTTPD.*;
 import pl.programator.cschool.bookshelf.storage.BookStorage;
+import pl.programator.cschool.bookshelf.storage.impl.PostgresBookStorageImpl;
 import pl.programator.cschool.bookshelf.storage.impl.StaticListBookStorageImpl;
 import pl.programator.cschool.bookshelf.type.Book;
 
@@ -13,9 +14,9 @@ import java.util.Map;
 import static fi.iki.elonen.NanoHTTPD.Response.Status.*;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 
-//07.09.2019
 public class BookController {
-    private BookStorage bookStorage = new StaticListBookStorageImpl(); //creates storage of books
+   // private BookStorage bookStorage = new StaticListBookStorageImpl(); //creates storage of books via JAVA
+    private BookStorage bookStorage = new PostgresBookStorageImpl(); //creates storage of books via SQL
 
     private static final String BOOK_IT_PARAM_NAME = "bookId"; //used to get book from storage
 

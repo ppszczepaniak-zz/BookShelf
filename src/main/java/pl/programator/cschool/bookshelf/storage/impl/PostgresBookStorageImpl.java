@@ -49,7 +49,7 @@ public class PostgresBookStorageImpl implements BookStorage {
     public void addBook(Book book) {
         final String sqlInsertBook = "INSERT INTO books(" +
                 "book_id, title, author, pages_sum, year_of_published, publishing_house)" +
-                "VALUES (NEXTVAL('sekwencja'),?,?,?,?,?);"; //dodaje NEXTVAL('sekwencja')
+                "VALUES (NEXTVAL('sekwencja'),?,?,?,?,?) RETURNING book_id;";
 
         Connection connection = initialazeDataBaseConnection(); //odpalamy połączenie
         PreparedStatement preparedStatement = null;
@@ -57,14 +57,14 @@ public class PostgresBookStorageImpl implements BookStorage {
         try {  //przygotowuje Statement (prepared statement)
             preparedStatement = connection.prepareStatement(sqlInsertBook);
 
-            preparedStatement.setLong(1, book.getId());
-            preparedStatement.setString(2, book.getTitle());
-            preparedStatement.setString(3, book.getAuthor());
-            preparedStatement.setInt(4, book.getPagesSum());
-            preparedStatement.setInt(5, book.getYearOfPublished());
-            preparedStatement.setString(6, book.getPublishingHouse());
+            preparedStatement.setString(1, book.getTitle());  //parameterIndex: numeruje znaki zapytania!
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setInt(3, book.getPagesSum());
+            preparedStatement.setInt(4, book.getYearOfPublished());
+            preparedStatement.setString(5, book.getPublishingHouse());
 
-            preparedStatement.executeUpdate(); //odpalam statement
+            preparedStatement.execute(); //odpalam statement poprzez execute, a nie executeUpdate()
+                                        // bo ten drugi nie spodziewa sie zadnych zwrotow z RETURNING
 
         } catch (SQLException e) {
             System.err.println("Error during invoking SQL query:\n" + e.getMessage());

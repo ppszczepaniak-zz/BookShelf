@@ -78,6 +78,33 @@ public class PostgresBookStorageImpl implements BookStorage {
 
     @Override
     public Book getBook(long id) {
+        final String sqlSelectAllBook = "SELECT * from books WHERE book_id = ?;";
+        Connection connection = initialazeDataBaseConnection(); //odpalamy połączenie
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(sqlSelectAllBook);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {  //jesli jest taka ksiazka w bazie to zwroc, else null (na koncu)
+                Book book = new Book(); //tworze nowa ksiazke, jesli jest kolejny rekord w bazie
+
+                book.setId(resultSet.getLong("book_id"));
+                book.setTitle(resultSet.getString("title"));
+                book.setAuthor(resultSet.getString("author"));
+                book.setPagesSum(resultSet.getInt("pages_sum"));
+                book.setYearOfPublished(resultSet.getInt("year_of_published"));
+                book.setPublishingHouse(resultSet.getString("publishing_house"));
+
+                return book;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during invoking SQL query:\n" + e.getMessage());
+            throw new RuntimeException("Error during invoking SQL query");
+        } finally {//zamykam statement i connection
+            closeDatabaseResources(preparedStatement, connection);
+        }
         return null;
     }
 

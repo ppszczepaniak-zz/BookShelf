@@ -35,4 +35,7 @@ public class BookShelfApp extends NanoHTTPD {
      * GET http://localhost:8080/book/getAll
      * GET http://localhost:8080/book/get +in PARAMS: add bookId, value: [number - first add book, and find one ID by getAll]
      */
+
+
+    //TODO zrob testy RESTASSURED
 }

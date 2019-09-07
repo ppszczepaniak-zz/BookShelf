@@ -1,13 +1,13 @@
 package pl.programator.cschool.bookshelf.storage.impl;
 
-import pl.programator.cschool.bookshelf.storage.BookStorage;
+import pl.programator.cschool.bookshelf.storage.BookStorage2;
 import pl.programator.cschool.bookshelf.type.Book;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostgresBookStorageImpl implements BookStorage {
+public class PostgresBookStorageImpl implements BookStorage2 {
 
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/bookshelf_db"; //create it first
     private static final String DATABASE_USER = "postgres";
@@ -22,7 +22,7 @@ public class PostgresBookStorageImpl implements BookStorage {
         }
     }
 
-    private Connection initialazeDataBaseConnection() { //otwiera polaczenie
+    private Connection initializeDataBaseConnection() { //otwiera polaczenie
         try {
             return DriverManager.getConnection(JDBC_URL, DATABASE_USER, DATABASE_PASS);
         } catch (SQLException e) {
@@ -46,7 +46,7 @@ public class PostgresBookStorageImpl implements BookStorage {
     }
 
     @Override
-    public void addBook(Book book) {
+    public int addBook(Book book) {
         final String sqlInsertBook = "INSERT INTO books(" +
                 "book_id, title, author, pages_sum, year_of_published, publishing_house)" +
                 "VALUES (NEXTVAL('sekwencja'),?,?,?,?,?) RETURNING book_id;"; //1) dodaje NEXTVAL('sekwencja') zeby autonumerowal
@@ -54,8 +54,7 @@ public class PostgresBookStorageImpl implements BookStorage {
                                                                             //2) RETURNING zwraca wartosc z book_id,
                                                                             // po to zebym mogl ja przekazac do BookControllera
 
-
-        Connection connection = initialazeDataBaseConnection(); //odpalamy połączenie
+        Connection connection = initializeDataBaseConnection(); //odpalamy połączenie
         PreparedStatement preparedStatement = null;
 
         try {  //przygotowuje Statement (prepared statement)
@@ -70,6 +69,10 @@ public class PostgresBookStorageImpl implements BookStorage {
             preparedStatement.execute(); //odpalam statement poprzez execute, a nie executeUpdate()
                                         // bo ten drugi nie spodziewa sie zadnych zwrotow z RETURNING
 
+
+            return 0; //TODO add logic of returning book_id
+
+
         } catch (SQLException e) {
             System.err.println("Error during invoking SQL query:\n" + e.getMessage());
             throw new RuntimeException("Error during invoking SQL query");
@@ -77,12 +80,14 @@ public class PostgresBookStorageImpl implements BookStorage {
         } finally { //zamykam statement i connection
             closeDatabaseResources(preparedStatement, connection);
         }
+
+
     }
 
     @Override
     public Book getBook(long id) {
         final String sqlSelectAllBook = "SELECT * from books WHERE book_id = ?;";
-        Connection connection = initialazeDataBaseConnection(); //odpalamy połączenie
+        Connection connection = initializeDataBaseConnection(); //odpalamy połączenie
         PreparedStatement preparedStatement = null;
 
         try {
@@ -116,7 +121,7 @@ public class PostgresBookStorageImpl implements BookStorage {
         bookStorage.clear(); //czyszcze liste, bo inaczej kazde wywolanie getAllBooks dopisywaloby wszystkie do listy
         final String sqlSelectAllBook = "SELECT * from books;";
 
-        Connection connection = initialazeDataBaseConnection();
+        Connection connection = initializeDataBaseConnection();
         Statement statement = null;
 
         try {

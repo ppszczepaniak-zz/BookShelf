@@ -45,7 +45,6 @@ public class PostgresBookStorageImpl implements BookStorage {
         }
     }
 
-
     @Override
     public void addBook(Book book) {
         final String sqlInsertBook = "INSERT INTO books(" +
@@ -141,5 +140,4 @@ public class PostgresBookStorageImpl implements BookStorage {
         }
         return bookStorage;
     }
-
 }

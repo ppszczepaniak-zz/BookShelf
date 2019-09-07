@@ -1,5 +1,5 @@
 {
-	"tile":"Mały Książę",
+	"title":"Mały Książę",
 	"author":"Antoine de Saint-Exupéry",
 	"pagesSum":142,
 	"yearOfPublished":1947,

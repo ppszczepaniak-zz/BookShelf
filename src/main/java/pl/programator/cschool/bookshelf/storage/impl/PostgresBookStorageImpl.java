@@ -3,10 +3,7 @@ package pl.programator.cschool.bookshelf.storage.impl;
 import pl.programator.cschool.bookshelf.storage.BookStorage;
 import pl.programator.cschool.bookshelf.type.Book;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 public class PostgresBookStorageImpl implements BookStorage {
@@ -23,7 +20,7 @@ public class PostgresBookStorageImpl implements BookStorage {
         }
     }
 
-    private Connection initialazeDataBaseConnection() {
+    private Connection initialazeDataBaseConnection() { //otwiera polaczenie
         try {
             return DriverManager.getConnection(JDBC_URL, DATABASE_USER, DATABASE_PASS);
         } catch (SQLException e) {
@@ -32,7 +29,7 @@ public class PostgresBookStorageImpl implements BookStorage {
         }
     }
 
-    private void closeDatabaseResources(Statement statement, Connection connection) {
+    private void closeDatabaseResources(Statement statement, Connection connection) { //zamyka polaczenie i statement
         try {
             if (statement != null) {
                 statement.close();
@@ -46,6 +43,37 @@ public class PostgresBookStorageImpl implements BookStorage {
         }
     }
 
+
+    @Override
+    public void addBook(Book book) {
+        final String sqlInsertBook = "INSER INTO books(" +
+                "book_id, title, author, pages_sum, year_of_published, publishing_house)" +
+                "VALUES (?,?,?,?,?,?);";
+
+        Connection connection = initialazeDataBaseConnection(); //odpalamy połączenie
+        PreparedStatement preparedStatement = null;
+
+        try {  //przygotowuje Statement (prepared statement)
+            preparedStatement = connection.prepareStatement(sqlInsertBook);
+
+            preparedStatement.setLong(1, book.getId());
+            preparedStatement.setString(2, book.getTitle());
+            preparedStatement.setString(3, book.getAuthor());
+            preparedStatement.setInt(4, book.getPagesSum());
+            preparedStatement.setInt(5, book.getYearOfPublished());
+            preparedStatement.setString(6, book.getPublishingHouse());
+
+            preparedStatement.executeUpdate(); //odpalam statement
+
+        } catch (SQLException e) {
+            System.err.println("Error during invoking SQL query:\n" + e.getMessage());
+            throw new RuntimeException("Error during invoking SQL query");
+
+        } finally { //zamykam statement i connection
+            closeDatabaseResources(preparedStatement, connection);
+        }
+    }
+
     @Override
     public Book getBook(long id) {
         return null;
@@ -55,12 +83,6 @@ public class PostgresBookStorageImpl implements BookStorage {
     public List<Book> getAllBooks() {
         return null;
     }
-
-    @Override
-    public void addBook(Book book) {
-
-    }
-
 
 
 }

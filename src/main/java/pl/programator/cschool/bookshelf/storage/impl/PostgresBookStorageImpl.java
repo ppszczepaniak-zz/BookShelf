@@ -71,7 +71,7 @@ public class PostgresBookStorageImpl implements BookStorage {
                                         // bo ten drugi nie spodziewa sie zadnych zwrotow z RETURNING
 
             ResultSet resultSet = preparedStatement.getResultSet(); //odbieram wyniki z returning
-            if(resultSet.next()) { //jesli jest jakis
+            if(resultSet.next()) { //jesli jest jakis  + przesuwa o jeden kursor, zebym mogl odczytac
                 bookId = resultSet.getInt(1); //to wez z niego wartosc
             }
 

@@ -49,7 +49,11 @@ public class PostgresBookStorageImpl implements BookStorage {
     public void addBook(Book book) {
         final String sqlInsertBook = "INSERT INTO books(" +
                 "book_id, title, author, pages_sum, year_of_published, publishing_house)" +
-                "VALUES (NEXTVAL('sekwencja'),?,?,?,?,?) RETURNING book_id;";
+                "VALUES (NEXTVAL('sekwencja'),?,?,?,?,?) RETURNING book_id;"; //1) dodaje NEXTVAL('sekwencja') zeby autonumerowal
+                                                                            // po mojej wlasnej sekw. ktora stworzylem w POSTGRES
+                                                                            //2) RETURNING zwraca wartosc z book_id,
+                                                                            // po to zebym mogl ja przekazac do BookControllera
+
 
         Connection connection = initialazeDataBaseConnection(); //odpalamy połączenie
         PreparedStatement preparedStatement = null;

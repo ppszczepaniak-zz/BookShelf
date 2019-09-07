@@ -11,14 +11,13 @@ import java.util.List;
 
 public class PostgresBookStorageImpl implements BookStorage {
 
-    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/databaseName"; //TODO databaseName
+    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/bookshelf_db"; //create it first
     private static final String DATABASE_USER = "postgres";
     private static final String DATABASE_PASS = "password";
-    private static Class psqlDriver;
 
     static {  //loading Driver class so it works on older Java or JDBC
         try {
-            psqlDriver = Class.forName("org.postgresql.Driver");
+            Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             System.err.println("Server can't find postgresql Driver class:\n" + e);
         }

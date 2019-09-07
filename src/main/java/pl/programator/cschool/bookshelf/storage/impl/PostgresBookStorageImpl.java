@@ -24,6 +24,28 @@ public class PostgresBookStorageImpl implements BookStorage {
         }
     }
 
+    private Connection initialazeDataBaseConnection() {
+        try {
+            return DriverManager.getConnection(JDBC_URL, DATABASE_USER, DATABASE_PASS);
+        } catch (SQLException e) {
+            System.err.println("Server can't initialize database connection:\n" + e);
+            throw new RuntimeException("Server can't initialize database connection"); //TODO po co to?
+        }
+    }
+
+    private void closeDatabaseResources(Statement statement, Connection connection) {
+        try {
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during closing database resources:\n" + e);
+            throw new RuntimeException("Error during closing database resources"); //TODO po co to?
+        }
+    }
 
     @Override
     public Book getBook(long id) {
@@ -40,17 +62,6 @@ public class PostgresBookStorageImpl implements BookStorage {
 
     }
 
-    private Connection initialazeDataBaseConnection() {
-        try {
-            return DriverManager.getConnection(JDBC_URL, DATABASE_USER, DATABASE_PASS);
-        } catch (SQLException e) {
-            System.err.println("Server can't initialize database connection:\n" + e);
-            throw new RuntimeException("Server can't initialize database connection"); //TODO po co to?
-        }
-    }
 
-    private void closeConnection(Statement statement, Connection connection) throws SQLException {
-        statement.close();
-        connection.close();
-    }
+
 }

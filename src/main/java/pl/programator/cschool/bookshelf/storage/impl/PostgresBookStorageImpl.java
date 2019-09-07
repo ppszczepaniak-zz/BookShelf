@@ -16,7 +16,7 @@ public class PostgresBookStorageImpl implements BookStorage {
     private static final String DATABASE_PASS = "password";
     private static Class psqlDriver;
 
-    static {
+    static {  //loading Driver class so it works on older Java or JDBC
         try {
             psqlDriver = Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -29,7 +29,7 @@ public class PostgresBookStorageImpl implements BookStorage {
             return DriverManager.getConnection(JDBC_URL, DATABASE_USER, DATABASE_PASS);
         } catch (SQLException e) {
             System.err.println("Server can't initialize database connection:\n" + e);
-            throw new RuntimeException("Server can't initialize database connection"); //TODO po co to?
+            throw new RuntimeException("Server can't initialize database connection"); //Runtime rzucony po to zeby tu przerwal dzialanie programu
         }
     }
 
@@ -43,7 +43,7 @@ public class PostgresBookStorageImpl implements BookStorage {
             }
         } catch (SQLException e) {
             System.err.println("Error during closing database resources:\n" + e);
-            throw new RuntimeException("Error during closing database resources"); //TODO po co to?
+            throw new RuntimeException("Error during closing database resources"); //Runtime rzucony po to zeby tu przerwal dzialanie programu
         }
     }
 

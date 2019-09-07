@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.iki.elonen.NanoHTTPD.*;
 import pl.programator.cschool.bookshelf.storage.BookStorage;
 import pl.programator.cschool.bookshelf.storage.impl.PostgresBookStorageImpl;
-import pl.programator.cschool.bookshelf.storage.impl.StaticListBookStorageImpl;
 import pl.programator.cschool.bookshelf.type.Book;
 
 import java.util.List;
@@ -15,11 +14,10 @@ import static fi.iki.elonen.NanoHTTPD.Response.Status.*;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 
 public class BookController {
-   // private BookStorage bookStorage = new StaticListBookStorageImpl(); //creates storage of books via JAVA
+    // private BookStorage bookStorage = new StaticListBookStorageImpl(); //creates storage of books via JAVA
     private BookStorage bookStorage = new PostgresBookStorageImpl(); //creates storage of books via SQL
 
     private static final String BOOK_IT_PARAM_NAME = "bookId"; //used to get book from storage
-
 
     public Response serveGetBookRequest(IHTTPSession session) {
         Map<String, List<String>> requestParameters = session.getParameters(); //takes all params from session
@@ -76,8 +74,7 @@ public class BookController {
 
     public Response serveAddBookRequest(IHTTPSession session) {
         ObjectMapper objectMapper = new ObjectMapper();
-        long randomBookID = System.currentTimeMillis(); //random ID of the book (will be added automatically)
-
+        long bookId = 0;
         String lengthHeader = session.getHeaders().get("content-length"); //reads content length (in bytes) from headers (indicates the size of the entity-body)
         int contentLength = Integer.parseInt(lengthHeader); //converts to int
         byte[] buffer = new byte[contentLength]; //creates table of that many bytes (buffer)
@@ -91,14 +88,12 @@ public class BookController {
             Book requestBook = objectMapper.readValue(requestBody, Book.class); /*creates book from JSON data ->readValue(content,value type)
                                                                                 content - String in JSON, used to create object
                                                                                 value type - we point Java class, of which object should be created*/
-            requestBook.setId(randomBookID); //adds ID to the new book
-            bookStorage.addBook(requestBook); //adds book to bookStorage
-
+            bookId = bookStorage.addBook(requestBook); //adds book to bookStorage and returns ID of the book
         } catch (Exception e) {
             System.err.println("Error during process request: \n" + e);
             return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Internal error! Book has not been added.");
         }
 
-        return newFixedLengthResponse(OK, "text/plain", "Book has been successfully added. The ID of the book is: " + randomBookID); //zwraca liste ksiazek w JSON
+        return newFixedLengthResponse(OK, "text/plain", "Book has been successfully added. The ID of the book is: " + bookId); //zwraca liste ksiazek w JSON
     }
 }

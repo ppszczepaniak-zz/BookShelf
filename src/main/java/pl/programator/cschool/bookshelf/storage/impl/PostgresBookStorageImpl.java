@@ -1,13 +1,13 @@
 package pl.programator.cschool.bookshelf.storage.impl;
 
-import pl.programator.cschool.bookshelf.storage.BookStorage2;
+import pl.programator.cschool.bookshelf.storage.BookStorage;
 import pl.programator.cschool.bookshelf.type.Book;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostgresBookStorageImpl implements BookStorage2 {
+public class PostgresBookStorageImpl implements BookStorage {
 
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/bookshelf_db"; //create it first
     private static final String DATABASE_USER = "postgres";
@@ -47,6 +47,7 @@ public class PostgresBookStorageImpl implements BookStorage2 {
 
     @Override
     public int addBook(Book book) {
+        int bookId = 0;
         final String sqlInsertBook = "INSERT INTO books(" +
                 "book_id, title, author, pages_sum, year_of_published, publishing_house)" +
                 "VALUES (NEXTVAL('sekwencja'),?,?,?,?,?) RETURNING book_id;"; //1) dodaje NEXTVAL('sekwencja') zeby autonumerowal
@@ -69,9 +70,12 @@ public class PostgresBookStorageImpl implements BookStorage2 {
             preparedStatement.execute(); //odpalam statement poprzez execute, a nie executeUpdate()
                                         // bo ten drugi nie spodziewa sie zadnych zwrotow z RETURNING
 
+            ResultSet resultSet = preparedStatement.getResultSet(); //odbieram wyniki z returning
+            if(resultSet.next()) { //jesli jest jakis
+                bookId = resultSet.getInt(1); //to wez z niego wartosc
+            }
 
-            return 0; //TODO add logic of returning book_id
-
+            return bookId; //zwraca bookId
 
         } catch (SQLException e) {
             System.err.println("Error during invoking SQL query:\n" + e.getMessage());
@@ -80,7 +84,6 @@ public class PostgresBookStorageImpl implements BookStorage2 {
         } finally { //zamykam statement i connection
             closeDatabaseResources(preparedStatement, connection);
         }
-
 
     }
 

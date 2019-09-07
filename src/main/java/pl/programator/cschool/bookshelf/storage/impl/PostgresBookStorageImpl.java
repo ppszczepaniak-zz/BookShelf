@@ -12,6 +12,8 @@ import java.util.List;
 public class PostgresBookStorageImpl implements BookStorage {
 
     private static Class psqlDriver;
+    private Statement
+
 
     static {
         try {
@@ -50,7 +52,9 @@ public class PostgresBookStorageImpl implements BookStorage {
         /*
         my code here
          */
+    }
 
+    private void closeConnection(Statement statement, Connection connection) throws SQLException {
         statement.close();
         connection.close();
     }

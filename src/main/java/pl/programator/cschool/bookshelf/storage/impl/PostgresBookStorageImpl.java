@@ -4,6 +4,7 @@ import pl.programator.cschool.bookshelf.storage.BookStorage;
 import pl.programator.cschool.bookshelf.type.Book;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostgresBookStorageImpl implements BookStorage {
@@ -11,8 +12,9 @@ public class PostgresBookStorageImpl implements BookStorage {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/bookshelf_db"; //create it first
     private static final String DATABASE_USER = "postgres";
     private static final String DATABASE_PASS = "password";
+    private static List<Book> bookStorage = new ArrayList<>();
 
-    static {  //loading Driver class so it works on older Java or JDBC
+    static {  //loading Driver class so it works on older Java or JDBC (blok statyczny, odpali sie na starcie)
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -81,7 +83,37 @@ public class PostgresBookStorageImpl implements BookStorage {
 
     @Override
     public List<Book> getAllBooks() {
-        return null;
+        final String sqlSelectAllBook = "SELECT * from books;";
+
+        Connection connection = initialazeDataBaseConnection();
+        Statement statement = null;
+
+        try {
+            statement = connection.createStatement(); //statement a nie preparedStatement bo proste zapytanie bez parametrow
+            ResultSet resultSet = statement.executeQuery(sqlSelectAllBook); //odbieram z bazy wg zapytania (cala tabela books)
+
+            while (resultSet.next()) {  //next idzie na kolejny wiersz i zwraca true, jeśli jest
+                Book book = new Book(); //tworze nowa ksiazke, jesli jest kolejny rekord w bazie
+
+                book.setId(resultSet.getLong("book_id"));
+                book.setTitle(resultSet.getString("title"));
+                book.setAuthor(resultSet.getString("author"));
+                book.setPagesSum(resultSet.getInt("pages_sum"));
+                book.setYearOfPublished(resultSet.getInt("year_of_published"));
+                book.setPublishingHouse(resultSet.getString("publishing_house"));
+
+                bookStorage.add(book);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error during invoking SQL query:\n" + e.getMessage());
+            throw new RuntimeException("Error during invoking SQL query");
+
+        } finally {
+            closeDatabaseResources(statement, connection);
+        }
+
+
+        return bookStorage;
     }
 
 

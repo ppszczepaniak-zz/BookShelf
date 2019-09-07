@@ -83,6 +83,7 @@ public class PostgresBookStorageImpl implements BookStorage {
 
     @Override
     public List<Book> getAllBooks() {
+
         final String sqlSelectAllBook = "SELECT * from books;";
 
         Connection connection = initialazeDataBaseConnection();
@@ -102,6 +103,7 @@ public class PostgresBookStorageImpl implements BookStorage {
                 book.setYearOfPublished(resultSet.getInt("year_of_published"));
                 book.setPublishingHouse(resultSet.getString("publishing_house"));
 
+
                 bookStorage.add(book);
             }
         } catch (SQLException e) {
@@ -111,10 +113,7 @@ public class PostgresBookStorageImpl implements BookStorage {
         } finally {
             closeDatabaseResources(statement, connection);
         }
-
-
         return bookStorage;
     }
-
 
 }

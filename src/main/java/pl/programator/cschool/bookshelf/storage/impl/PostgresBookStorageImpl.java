@@ -49,7 +49,7 @@ public class PostgresBookStorageImpl implements BookStorage {
     public void addBook(Book book) {
         final String sqlInsertBook = "INSERT INTO books(" +
                 "book_id, title, author, pages_sum, year_of_published, publishing_house)" +
-                "VALUES (?,?,?,?,?,?);";
+                "VALUES (NEXTVAL('sekwencja'),?,?,?,?,?);"; //dodaje NEXTVAL('sekwencja')
 
         Connection connection = initialazeDataBaseConnection(); //odpalamy połączenie
         PreparedStatement preparedStatement = null;

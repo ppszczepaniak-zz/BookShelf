@@ -20,7 +20,7 @@ public class PostgresBookStorageImpl implements BookStorage {
         try {
             psqlDriver = Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("Server can't find postgresql Driver class:\n" + e);
         }
     }
 
@@ -40,9 +40,13 @@ public class PostgresBookStorageImpl implements BookStorage {
 
     }
 
-    private void makeConnection() throws SQLException {
-        Connection connection = DriverManager.getConnection(JDBC_URL, DATABASE_USER, DATABASE_PASS);
-        Statement statement = connection.createStatement();
+    private Connection initialazeDataBaseConnection() {
+        try {
+            return DriverManager.getConnection(JDBC_URL, DATABASE_USER, DATABASE_PASS);
+        } catch (SQLException e) {
+            System.err.println("Server can't initialize database connection:\n" + e);
+            throw new RuntimeException("Server can't initialize database connection"); //TODO po co to?
+        }
     }
 
     private void closeConnection(Statement statement, Connection connection) throws SQLException {

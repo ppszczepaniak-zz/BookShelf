@@ -46,8 +46,8 @@ public class PostgresBookStorageImpl implements BookStorage {
     }
 
     @Override
-    public int addBook(Book book) {
-        int bookId = 0;
+    public long addBook(Book book) {
+        long bookId = 0;
         final String sqlInsertBook = "INSERT INTO books(" +
                 "book_id, title, author, pages_sum, year_of_published, publishing_house)" +
                 "VALUES (NEXTVAL('sekwencja'),?,?,?,?,?) RETURNING book_id;"; //1) dodaje NEXTVAL('sekwencja') zeby autonumerowal
@@ -72,7 +72,7 @@ public class PostgresBookStorageImpl implements BookStorage {
 
             ResultSet resultSet = preparedStatement.getResultSet(); //odbieram wyniki z returning
             if(resultSet.next()) { //jesli jest jakis  + przesuwa o jeden kursor, zebym mogl odczytac
-                bookId = resultSet.getInt(1); //to wez z niego wartosc
+                bookId = resultSet.getLong(1); //to wez z niego wartosc
             }
 
             return bookId; //zwraca bookId

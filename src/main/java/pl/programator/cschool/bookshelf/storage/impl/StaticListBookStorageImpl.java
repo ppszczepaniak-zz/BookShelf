@@ -27,10 +27,11 @@ public class StaticListBookStorageImpl implements BookStorage {
     }
 
     @Override
-    public int addBook(Book book) {
-        int id = 0;
+    public long addBook(Book book) {
+        long id = 0;
         bookStorage.add(book);
         id = bookStorage.size();
+        book.setId(id); //sets ID of the book
         return id;
     }
 }

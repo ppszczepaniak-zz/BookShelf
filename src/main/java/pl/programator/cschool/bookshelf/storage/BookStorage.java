@@ -9,5 +9,5 @@ public interface BookStorage {
 
     List<Book> getAllBooks();
 
-    int addBook(Book book);
+    long addBook(Book book);
 }

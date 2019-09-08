@@ -90,6 +90,7 @@ public class BookController {
                                                                                 content - String in JSON, used to create object
                                                                                 value type - we point Java class, of which object should be created*/
             bookId = bookStorage.addBook(requestBook); //adds book to bookStorage and returns ID of the book
+
         } catch (Exception e) {
             System.err.println("Error during process request: \n" + e);
             return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Internal error! Book has not been added.");

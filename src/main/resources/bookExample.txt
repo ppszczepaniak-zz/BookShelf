@@ -13,3 +13,11 @@
     "yearOfPublished":2017,
     "publishingHouse":"Helion"
 }
+
+{
+    "title":"Python. Wprowadzenie.",
+    "author":"Mark Lutz",
+    "pagesSum":1184,
+    "yearOfPublished":2017,
+    "publishingHouse":"Helion"
+}

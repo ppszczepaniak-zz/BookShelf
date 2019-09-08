@@ -32,7 +32,7 @@ public class BookController {
 
             } catch (NumberFormatException nfe) { //if NaN
                 System.err.println("Error during converting of request parameter: \n" + nfe);
-                return newFixedLengthResponse(INTERNAL_ERROR, "text/plain", "Request parameter 'bookID' must be a number!");
+                return newFixedLengthResponse(BAD_REQUEST, "text/plain", "Request parameter 'bookID' must be a number!");
             }
 
             Book foundBook = bookStorage.getBook(bookId);

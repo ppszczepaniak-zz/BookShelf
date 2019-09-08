@@ -71,7 +71,6 @@ public class BookShelfAppTest {
                 statusCode(500);
     }
 
-
     private long addBookAndGetId(String json) { //gets ID of the book
         String responseText = with().body(json)
                 .when().post("/book/add")
@@ -83,9 +82,11 @@ public class BookShelfAppTest {
 
     @Test
     public void getMethod_correctBookIdParam_shouldReturnStatus200() {
-        int bookId1 = (int)addBookAndGetId(BOOK_1); //adds book 1, id = 1 //TODO dlaczego musze castowac do int?
-                                                                            // JSON wychodzi int, mimo ze powinien byc long
-        long bookId2 = addBookAndGetId(BOOK_2); //adds book 2, id = 2
+        int bookId1 = (int) addBookAndGetId(BOOK_1); //adds book 1, id = 1
+        /** dlaczego musze castowac do int?  JSON wychodzi int, mimo ze powinien byc long*/
+
+
+        long bookId2 = (int) addBookAndGetId(BOOK_2); //adds book 2, id = 2
 
         with().param("bookId", bookId1) //pobieram ksiazke z tego ID i powinna to byc własciwa
                 .when().get("/book/get")
@@ -97,4 +98,30 @@ public class BookShelfAppTest {
                 .body("yearOfPublished", equalTo(2019))
                 .body("publishingHouse", equalTo("Helion"));
     }
+
+
+    @Test
+    public void getMethod_noBookIdParam_shouldReturnStatus400() {
+        when()
+                .get("book/get")
+                .then().statusCode(400)
+                .body(equalTo("Incorrect request parameter!"));
+    }
+
+
+    @Test
+    public void getMethod_wrongTypeBookIdParam_shouldReturnStatus400() {
+        with().param("bookId", "abc") //bledny ID NaN
+                .when().get("/book/get")
+                .then().statusCode(400)
+                .body(equalTo("Request parameter 'bookID' must be a number!"));
+    }
+
+    @Test
+    public void getMethod_bookDoesntExist_shouldReturnStatus404() {
+        with().param("bookId", 1243452) //bledny ID
+                .when().get("/book/get")
+                .then().statusCode(404);
+    }
+
 }

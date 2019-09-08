@@ -39,4 +39,10 @@ public class StaticListBookStorageImpl implements BookStorage {
         return id;
     }
 
+    @Override
+    public void clearDatabase() {
+       bookList.clear();
+    }
+
+
 }

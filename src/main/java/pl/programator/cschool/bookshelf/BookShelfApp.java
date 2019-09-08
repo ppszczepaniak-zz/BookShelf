@@ -1,12 +1,18 @@
 package pl.programator.cschool.bookshelf;
 
+import com.sun.org.apache.regexp.internal.RE;
 import fi.iki.elonen.NanoHTTPD;
+import pl.programator.cschool.bookshelf.controller.BookController;
 
 import java.io.IOException;
 
 public class BookShelfApp extends NanoHTTPD {
 
     RequestUrlMapper requestUrlMapper = new RequestUrlMapper();
+
+    public void clear() {
+       requestUrlMapper.getBookController().getBookStorage().clearDatabase();
+    }
 
     public BookShelfApp(int port) throws IOException {
         super(port);
@@ -27,6 +33,8 @@ public class BookShelfApp extends NanoHTTPD {
     public Response serve(IHTTPSession session) {
         return requestUrlMapper.delegateRequest(session);
     }
+
+
 
     /** HOW IT WORKS
      * Fire up in Postman:

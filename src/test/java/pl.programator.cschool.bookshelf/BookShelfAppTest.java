@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.programator.cschool.bookshelf.storage.impl.PostgresBookStorageImpl;
 import pl.programator.cschool.bookshelf.storage.impl.StaticListBookStorageImpl;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class BookShelfAppTest {
     @AfterEach
     public void afterEach() {
         bookShelfApp.stop();
-        StaticListBookStorageImpl.getBookList().clear(); //czyszcze liste statyczna (przypadek implementacji lista statyczna)
+        bookShelfApp.clear(); //czyszczenie
     }
 
     //Tests of ADD
@@ -89,7 +90,7 @@ public class BookShelfAppTest {
         long bookId1 = addBookAndGetId(BOOK_1); //adds book 1, id = 1
         long bookId2 = addBookAndGetId(BOOK_2); //adds book 2, id = 2
 
-        with().param("bookId", 1) //pobieram ksiazke z tego ID i powinna to byc własciwa
+        with().param("bookId", bookId1) //pobieram ksiazke z tego ID i powinna to byc własciwa
                 .when().get("/book/get")
                 .then().statusCode(200)
                 .body("id", equalTo((int)bookId1)) //rzutuje na int bo sie krzaczy ten RestAssured tutaj (zwraca int, zamiast long)

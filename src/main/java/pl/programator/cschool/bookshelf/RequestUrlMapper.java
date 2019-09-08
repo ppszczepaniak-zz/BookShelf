@@ -13,9 +13,16 @@ public class RequestUrlMapper {
     private final static String ADD_BOOK_URL = "/book/add";
     private final static String GET_BOOK_URL = "/book/get";
     private final static String GET_ALL_BOOK_URL = "/book/getAll";
+    private BookController bookController = new BookController();
+
+    public BookController getBookController() {
+        return bookController;
+    }
+
+
 
     public Response delegateRequest(IHTTPSession session) {
-        BookController bookController = new BookController();
+
 
         if (GET.equals(session.getMethod()) && GET_BOOK_URL.equals(session.getUri())) {
             return bookController.serveGetBookRequest(session);

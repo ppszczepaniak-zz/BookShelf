@@ -51,9 +51,9 @@ public class PostgresBookStorageImpl implements BookStorage {
         final String sqlInsertBook = "INSERT INTO books(" +
                 "book_id, title, author, pages_sum, year_of_published, publishing_house)" +
                 "VALUES (NEXTVAL('sekwencja'),?,?,?,?,?) RETURNING book_id;"; //1) dodaje NEXTVAL('sekwencja') zeby autonumerowal
-                                                                            // po mojej wlasnej sekw. ktora stworzylem w POSTGRES
-                                                                            //2) RETURNING zwraca wartosc z book_id,
-                                                                            // po to zebym mogl ja przekazac do BookControllera
+        // po mojej wlasnej sekw. ktora stworzylem w POSTGRES
+        //2) RETURNING zwraca wartosc z book_id,
+        // po to zebym mogl ja przekazac do BookControllera
 
         Connection connection = initializeDataBaseConnection(); //odpalamy połączenie
         PreparedStatement preparedStatement = null;
@@ -68,10 +68,10 @@ public class PostgresBookStorageImpl implements BookStorage {
             preparedStatement.setString(5, book.getPublishingHouse());
 
             preparedStatement.execute(); //odpalam statement poprzez execute, a nie executeUpdate()
-                                        // bo ten drugi nie spodziewa sie zadnych zwrotow z RETURNING
+            // bo ten drugi nie spodziewa sie zadnych zwrotow z RETURNING
 
             ResultSet resultSet = preparedStatement.getResultSet(); //odbieram wyniki z returning
-            if(resultSet.next()) { //jesli jest jakis  + przesuwa o jeden kursor, zebym mogl odczytac
+            if (resultSet.next()) { //jesli jest jakis  + przesuwa o jeden kursor, zebym mogl odczytac
                 bookId = resultSet.getLong(1); //to wez z niego wartosc
             }
 
@@ -152,4 +152,21 @@ public class PostgresBookStorageImpl implements BookStorage {
         }
         return bookStorage;
     }
+
+    @Override
+    public void clearDatabase() {
+        final String sqlClearDB = "DELETE from books"; //removes all from table
+        Connection connection = initializeDataBaseConnection(); //odpalamy połączenie
+        Statement statement = null;
+
+        try {
+            statement = connection.createStatement();
+            statement.executeQuery(sqlClearDB);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeDatabaseResources(statement, connection);
+        }
+    }
+
 }

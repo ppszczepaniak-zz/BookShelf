@@ -10,4 +10,6 @@ public interface BookStorage {
     List<Book> getAllBooks();
 
     long addBook(Book book);
+
+    void clearDatabase();
 }

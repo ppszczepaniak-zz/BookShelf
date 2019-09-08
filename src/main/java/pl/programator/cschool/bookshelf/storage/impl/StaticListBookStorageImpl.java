@@ -9,11 +9,15 @@ import java.util.List;
 
 public class StaticListBookStorageImpl implements BookStorage {
 
-    private static List<Book> bookStorage = new ArrayList<>();
+    public static List<Book> getBookList() {
+        return bookList;
+    }
+
+    private static List<Book> bookList = new ArrayList<>();
 
     @Override
     public Book getBook(long id) {
-        for (Book book : bookStorage) {
+        for (Book book : bookList) {
             if (book.getId() == id) {
                 return book;
             }
@@ -23,15 +27,16 @@ public class StaticListBookStorageImpl implements BookStorage {
 
     @Override
     public List<Book> getAllBooks() {
-        return bookStorage;
+        return bookList;
     }
 
     @Override
     public long addBook(Book book) {
         long id = 0;
-        bookStorage.add(book);
-        id = bookStorage.size();
+        bookList.add(book);
+        id = bookList.size();
         book.setId(id); //sets ID of the book
         return id;
     }
+
 }

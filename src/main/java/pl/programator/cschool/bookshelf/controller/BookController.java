@@ -98,4 +98,5 @@ public class BookController {
 
         return newFixedLengthResponse(OK, "text/plain", "Book has been successfully added. The ID of the book is: " + bookId); //zwraca liste ksiazek w JSON
     }
+
 }

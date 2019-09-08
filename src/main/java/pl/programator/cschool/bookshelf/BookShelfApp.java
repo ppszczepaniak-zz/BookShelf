@@ -37,6 +37,9 @@ public class BookShelfApp extends NanoHTTPD {
 
 
     /** HOW IT WORKS
+     * w BookController decydujesz komentarzem ktorej implementacji uzyc:
+     * StaticListBookStorageImpl czy PostgresBookStorageImpl
+     *
      * Fire up in Postman:
      * POST http://localhost:8080/book/add +in BODY: fill some JSON, see bookExample.txt
      * GET http://localhost:8080/book/getAll

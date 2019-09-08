@@ -15,8 +15,8 @@ import static fi.iki.elonen.NanoHTTPD.Response.Status.*;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 
 public class BookController {
-     private BookStorage bookStorage = new StaticListBookStorageImpl(); //creates storage of books via JAVA
- // private BookStorage bookStorage = new PostgresBookStorageImpl(); //creates storage of books via SQL
+    //private BookStorage bookStorage = new StaticListBookStorageImpl(); //creates storage of books via JAVA
+    private BookStorage bookStorage = new PostgresBookStorageImpl(); //creates storage of books via SQL
 
     public BookStorage getBookStorage() {
         return bookStorage;

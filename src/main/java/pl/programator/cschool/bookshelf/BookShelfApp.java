@@ -1,8 +1,6 @@
 package pl.programator.cschool.bookshelf;
 
-import com.sun.org.apache.regexp.internal.RE;
 import fi.iki.elonen.NanoHTTPD;
-import pl.programator.cschool.bookshelf.controller.BookController;
 
 import java.io.IOException;
 
@@ -37,10 +35,10 @@ public class BookShelfApp extends NanoHTTPD {
 
 
     /** HOW IT WORKS
-     * w BookController decydujesz komentarzem ktorej implementacji uzyc:
-     * StaticListBookStorageImpl czy PostgresBookStorageImpl
+     * 1) in BookController.java choose (comment out) which implementation to use
+     * StaticListBookStorageImpl (Java List) or PostgresBookStorageImpl (SQL)
      *
-     * Fire up in Postman:
+     * 2) Fire up in Postman:
      * POST http://localhost:8080/book/add +in BODY: fill some JSON, see bookExample.txt
      * GET http://localhost:8080/book/getAll
      * GET http://localhost:8080/book/get +in PARAMS: add bookId, value: [number - first add book, and find one ID by getAll]

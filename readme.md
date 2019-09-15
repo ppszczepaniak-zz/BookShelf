@@ -1,9 +1,12 @@
-#BookShelf app 
+## BookShelf app 
+
 [![Build Status](https://travis-ci.org/ppszczepaniak/BookShelf.svg?branch=master)](https://travis-ci.org/ppszczepaniak/BookShelf)
 
-Two implementations of database:
-Java ArrayList or PostgreSQL 
-
+Two implementations of database available -
+Java ArrayList or PostgreSQL.   
+Choose implementation by commenting out one line in BookController.java:  
+Use StaticListBookStorageImpl (ArrayList) or PostgresBookStorageImpl (SQL)  
+***
 Commands for creating basic PostgreSQL database (one table):
 ```
 create table books

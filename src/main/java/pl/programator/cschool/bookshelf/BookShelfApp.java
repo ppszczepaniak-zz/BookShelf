@@ -35,6 +35,7 @@ public class BookShelfApp extends NanoHTTPD {
 
     /** HOW IT WORKS
      * 1) in BookController.java choose (comment out) which implementation to use
+     * StaticListBookStorageImpl (Java List) or PostgresBookStorageImpl (SQL)     * 1) in BookController.java choose (comment out) which implementation to use
      * StaticListBookStorageImpl (Java List) or PostgresBookStorageImpl (SQL)
      *
      * 2) Fire up in Postman:

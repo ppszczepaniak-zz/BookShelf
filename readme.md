@@ -1,6 +1,6 @@
 ## BookShelf app 
 
-[![Build Status](https://travis-ci.org/ppszczepaniak/BookShelf.svg?branch=master)](https://travis-ci.org/ppszczepaniak/BookShelf)
+###### Travis CI status: [![Build Status](https://travis-ci.org/ppszczepaniak/BookShelf.svg?branch=master)](https://travis-ci.org/ppszczepaniak/BookShelf)
 
 Two implementations of database available -
 Java ArrayList or PostgreSQL.   

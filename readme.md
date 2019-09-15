@@ -23,3 +23,13 @@ Adding  primary key:
 ```
 ALTER TABLE books ADD CONSTRAINT book_id_pk PRIMARY KEY (book_id);
 ```
+***
+How to test it with Postman:  
+
+      1. POST http://localhost:8080/book/add 
+        + in BODY: fill some JSON, see bookExample.txt
+      2. GET http://localhost:8080/book/getAll
+      3. GET http://localhost:8080/book/get 
+        + in PARAMS: add bookId, value: [number - first add book, then find ID by getAll]
+        
+See bookExample.txt for examples of books in JSON

@@ -32,15 +32,4 @@ public class BookShelfApp extends NanoHTTPD {
         return requestUrlMapper.delegateRequest(session);
     }
 
-
-    /** HOW IT WORKS
-     * 1) in BookController.java choose (comment out) which implementation to use
-     * StaticListBookStorageImpl (Java List) or PostgresBookStorageImpl (SQL)     * 1) in BookController.java choose (comment out) which implementation to use
-     * StaticListBookStorageImpl (Java List) or PostgresBookStorageImpl (SQL)
-     *
-     * 2) Fire up in Postman:
-     * POST http://localhost:8080/book/add +in BODY: fill some JSON, see bookExample.txt
-     * GET http://localhost:8080/book/getAll
-     * GET http://localhost:8080/book/get +in PARAMS: add bookId, value: [number - first add book, and find one ID by getAll]
-     */
 }

@@ -41,8 +41,6 @@ public class StaticListBookStorageImpl implements BookStorage {
 
     @Override
     public void clearDatabase() {
-       bookList.clear();
+        bookList.clear();
     }
-
-
 }

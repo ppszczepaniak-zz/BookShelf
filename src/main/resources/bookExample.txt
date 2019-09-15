@@ -5,7 +5,6 @@
 	"yearOfPublished":1947,
 	"publishingHouse":"Wydawnictwo ABC"
 }
-
 {
     "title":"Python. Wprowadzenie.",
     "author":"Mark Lutz",
